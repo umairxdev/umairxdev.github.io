@@ -16,15 +16,14 @@ export const playClick = () => {
     osc.connect(gain)
     gain.connect(ctx.destination)
     
-    osc.type = 'sine'
-    osc.frequency.setValueAtTime(1200, ctx.currentTime)
-    osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.08)
+    osc.type = 'square'
+    osc.frequency.setValueAtTime(1000, ctx.currentTime)
     
     gain.gain.setValueAtTime(0.08, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.02)
     
     osc.start(ctx.currentTime)
-    osc.stop(ctx.currentTime + 0.08)
+    osc.stop(ctx.currentTime + 0.02)
   } catch (e) {}
 }
 
@@ -37,14 +36,13 @@ export const playDrag = () => {
     osc.connect(gain)
     gain.connect(ctx.destination)
     
-    osc.type = 'sine'
+    osc.type = 'square'
     osc.frequency.setValueAtTime(800, ctx.currentTime)
-    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.12)
     
     gain.gain.setValueAtTime(0.06, ctx.currentTime)
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.03)
     
     osc.start(ctx.currentTime)
-    osc.stop(ctx.currentTime + 0.12)
+    osc.stop(ctx.currentTime + 0.03)
   } catch (e) {}
 }
