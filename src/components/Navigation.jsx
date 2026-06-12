@@ -1,10 +1,16 @@
 import React, { useState } from 'react'
+import { playClick } from '../utils/audio'
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
+    playClick()
     setIsMenuOpen(!isMenuOpen)
+  }
+
+  const handleNavClick = () => {
+    playClick()
   }
 
   return (
@@ -30,11 +36,11 @@ const Navigation = () => {
           fontFamily: 'var(--font-mono)',
           letterSpacing: '0.05em',
         }}>
-          <a href="#about">ABOUT</a>
-          <a href="#experience">EXPERIENCE</a>
-          <a href="#projects">PROJECTS</a>
-          <a href="#skills">SKILLS</a>
-          <a href="#contact">CONTACT</a>
+          <a href="#about" onClick={handleNavClick}>ABOUT</a>
+          <a href="#experience" onClick={handleNavClick}>EXPERIENCE</a>
+          <a href="#projects" onClick={handleNavClick}>PROJECTS</a>
+          <a href="#skills" onClick={handleNavClick}>SKILLS</a>
+          <a href="#contact" onClick={handleNavClick}>CONTACT</a>
         </div>
 
         {/* Mobile Hamburger */}

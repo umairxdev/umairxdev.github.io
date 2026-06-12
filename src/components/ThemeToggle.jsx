@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { playDrag } from '../utils/audio'
 
 const ThemeToggle = () => {
   const canvasRef = useRef(null)
@@ -206,6 +207,7 @@ const ThemeToggle = () => {
         physics.isDragging = true
         physics.toggled = false
         mouseRef.current.isDown = true
+        playDrag()
       }
     }
     
@@ -228,6 +230,7 @@ const ThemeToggle = () => {
         physics.toggled = false
         mouseRef.current.x = x
         mouseRef.current.y = y
+        playDrag()
         e.preventDefault()
       }
     }
