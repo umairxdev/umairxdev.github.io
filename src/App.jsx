@@ -1,6 +1,7 @@
 import React from 'react'
 import CustomCursor from './components/CustomCursor'
 import ThemeToggle from './components/ThemeToggle'
+import GridOverlay from './components/GridOverlay'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import About from './components/About'
@@ -13,6 +14,7 @@ function App() {
   return (
     <div className="App">
       <div className="noise-overlay"></div>
+      <GridOverlay />
       <CustomCursor />
       <ThemeToggle />
       <Navigation />
