@@ -6,6 +6,7 @@
   --text-dim: #555555;
   --accent: #ED8B2F;
   --accent-soft: #ED8B2F22;
+  --grid: #333333;
   --font-display: 'Syne', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
@@ -19,6 +20,7 @@
   --text-dim: #999999;
   --accent: #ED8B2F;
   --accent-soft: #ED8B2F22;
+  --grid: #dddddd;
 }
 
 * {
@@ -34,7 +36,9 @@ html {
 
 body {
   font-family: var(--font-mono);
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
