@@ -28,14 +28,14 @@ const ThemeToggle = () => {
     const ctx = canvas.getContext('2d')
     
     const resize = () => {
-      canvas.width = 150
-      canvas.height = 400
+      canvas.width = 200
+      canvas.height = 500
     }
     resize()
     
     const physics = physicsRef.current
     const pointCount = 30
-    const spacing = 6
+    const spacing = 5
     const pivotX = 75
     const pivotY = 0
     
@@ -222,8 +222,8 @@ const ThemeToggle = () => {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '150px',
-        height: '400px',
+        width: '200px',
+        height: '500px',
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
