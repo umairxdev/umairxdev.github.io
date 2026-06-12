@@ -2,28 +2,23 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 
 const ThemeToggle = () => {
   const canvasRef = useRef(null)
-  const containerRef = useRef(null)
   const [isDark, setIsDark] = useState(true)
-  const [isOn, setIsOn] = useState(true)
-  const [showHint, setShowHint] = useState(true)
   
   const physicsRef = useRef({
+    x: 0,
+    y: 0,
+    vx: 0,
+    vy: 0,
     angle: 0,
     angularVelocity: 0,
-    length: 120,
-    targetLength: 120,
     isDragging: false,
-    dragX: 0,
-    dragY: 0,
-    lightOn: true,
-    toggleThreshold: 180,
-    released: false,
+    dragStartX: 0,
+    dragStartY: 0,
     time: 0,
   })
   
   const mouseRef = useRef({ x: 0, y: 0 })
   const animationRef = useRef(null)
-  const hintTimeoutRef = useRef(null)
 
   const toggleTheme = useCallback(() => {
     setIsDark(prev => {
@@ -31,7 +26,6 @@ const ThemeToggle = () => {
       document.documentElement.setAttribute('data-theme', newTheme ? 'dark' : 'light')
       return newTheme
     })
-    setIsOn(prev => !prev)
   }, [])
 
   useEffect(() => {
@@ -41,156 +35,91 @@ const ThemeToggle = () => {
     const ctx = canvas.getContext('2d')
     
     const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.width = 150
+      canvas.height = 250
     }
     resize()
-    window.addEventListener('resize', resize)
-
+    
     const physics = physicsRef.current
-    const gravity = 0.5
-    const damping = 0.985
-    const restLength = 120
+    const pivotX = 60
+    const pivotY = 0
+    const restLength = 100
+    const gravity = 0.3
+    const damping = 0.96
     
     const animate = () => {
       physics.time += 0.016
-      const width = canvas.width
-      const pivotX = width / 2
-      const pivotY = 0
       
       if (!physics.isDragging) {
+        // Pendulum physics
         const force = -gravity * Math.sin(physics.angle)
         physics.angularVelocity += force
         physics.angularVelocity *= damping
         physics.angle += physics.angularVelocity
         
-        const lengthDiff = physics.targetLength - physics.length
-        physics.length += lengthDiff * 0.08
-        
-        physics.angularVelocity += Math.sin(physics.time * 0.5) * 0.0002
+        // Add gentle ambient sway
+        physics.angularVelocity += Math.sin(physics.time * 0.8) * 0.0003
       } else {
-        const dx = physics.dragX - pivotX
-        const dy = physics.dragY - pivotY
+        // While dragging - follow mouse
+        const dx = mouseRef.current.x - pivotX
+        const dy = mouseRef.current.y - pivotY
         const targetAngle = Math.atan2(dx, dy)
-        const targetLength = Math.sqrt(dx * dx + dy * dy)
-        
-        physics.angle += (targetAngle - physics.angle) * 0.3
-        physics.length += (Math.max(60, Math.min(targetLength, 250)) - physics.length) * 0.3
+        physics.angle += (targetAngle - physics.angle) * 0.2
         physics.angularVelocity = 0
-        
-        if (targetLength > physics.toggleThreshold && !physics.released) {
-          physics.released = true
-          toggleTheme()
-        }
       }
+      
+      const circleX = pivotX + Math.sin(physics.angle) * restLength
+      const circleY = pivotY + Math.cos(physics.angle) * restLength
       
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
-      const bulbX = pivotX + Math.sin(physics.angle) * physics.length
-      const bulbY = pivotY + Math.cos(physics.angle) * physics.length
-      
-      const segments = 10
+      // Draw elastic string with wave physics
+      const segments = 20
       ctx.beginPath()
       ctx.moveTo(pivotX, pivotY)
       
       for (let i = 1; i <= segments; i++) {
         const t = i / segments
-        const segX = pivotX + Math.sin(physics.angle + Math.sin(physics.time * 2 + t * 3) * 0.02 * (1 - t)) * physics.length * t
-        const segY = pivotY + Math.cos(physics.angle + Math.sin(physics.time * 2 + t * 3) * 0.02 * (1 - t)) * physics.length * t
+        const baseX = pivotX + (circleX - pivotX) * t
+        const baseY = pivotY + (circleY - pivotY) * t
+        
+        // Add wave effect based on velocity and time
+        const wave = Math.sin(physics.time * 3 + t * 8) * 3 * (1 - t) * Math.abs(physics.angularVelocity * 50)
+        const waveX = baseX + Math.cos(physics.angle + Math.PI / 2) * wave
+        const waveY = baseY - Math.sin(physics.angle + Math.PI / 2) * wave
         
         if (i === 1) {
-          ctx.lineTo(segX, segY)
+          ctx.lineTo(waveX, waveY)
         } else {
           const prevT = (i - 1) / segments
-          const prevX = pivotX + Math.sin(physics.angle) * physics.length * prevT
-          const prevY = pivotY + Math.cos(physics.angle) * physics.length * prevT
-          const cpX = (prevX + segX) / 2 + Math.sin(physics.time * 3 + t) * 2
-          const cpY = (prevY + segY) / 2
-          ctx.quadraticCurveTo(cpX, cpY, segX, segY)
+          const prevBaseX = pivotX + (circleX - pivotX) * prevT
+          const prevBaseY = pivotY + (circleY - pivotY) * prevT
+          const prevWave = Math.sin(physics.time * 3 + prevT * 8) * 3 * (1 - prevT) * Math.abs(physics.angularVelocity * 50)
+          const prevX = prevBaseX + Math.cos(physics.angle + Math.PI / 2) * prevWave
+          const prevY = prevBaseY - Math.sin(physics.angle + Math.PI / 2) * prevWave
+          
+          const cpX = (prevX + waveX) / 2
+          const cpY = (prevY + waveY) / 2
+          ctx.quadraticCurveTo(cpX, cpY, waveX, waveY)
         }
       }
       
-      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.3)'
-      ctx.lineWidth = 2
+      ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.4)'
+      ctx.lineWidth = 2.5
       ctx.lineCap = 'round'
       ctx.stroke()
       
-      const glowRadius = physics.isDragging ? 50 : 40
-      const glow = ctx.createRadialGradient(bulbX, bulbY, 0, bulbX, bulbY, glowRadius)
-      
-      if (isOn) {
-        glow.addColorStop(0, isDark ? 'rgba(201, 169, 110, 0.8)' : 'rgba(255, 200, 80, 0.9)')
-        glow.addColorStop(0.4, isDark ? 'rgba(201, 169, 110, 0.3)' : 'rgba(255, 200, 80, 0.4)')
-        glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-      } else {
-        glow.addColorStop(0, 'rgba(200, 200, 200, 0.4)')
-        glow.addColorStop(1, 'rgba(0, 0, 0, 0)')
-      }
-      
-      ctx.fillStyle = glow
+      // Draw filled circle (simple, no bulb)
       ctx.beginPath()
-      ctx.arc(bulbX, bulbY, glowRadius, 0, Math.PI * 2)
+      ctx.arc(circleX, circleY, 10, 0, Math.PI * 2)
+      ctx.fillStyle = isDark ? 'var(--accent)' : 'var(--accent)'
       ctx.fill()
       
-      if (isOn) {
-        const rayCount = 8
-        for (let i = 0; i < rayCount; i++) {
-          const rayAngle = (i / rayCount) * Math.PI * 2 + physics.time * 0.5
-          const rayLength = 30 + Math.sin(physics.time * 2 + i) * 10
-          const rayX = bulbX + Math.cos(rayAngle) * rayLength
-          const rayY = bulbY + Math.sin(rayAngle) * rayLength
-          
-          ctx.beginPath()
-          ctx.moveTo(bulbX, bulbY)
-          ctx.lineTo(rayX, rayY)
-          ctx.strokeStyle = isDark ? 'rgba(201, 169, 110, 0.3)' : 'rgba(255, 200, 80, 0.4)'
-          ctx.lineWidth = 2
-          ctx.stroke()
-        }
-      }
-      
+      // Small highlight on circle
       ctx.beginPath()
-      ctx.arc(bulbX, bulbY - 8, 8, 0, Math.PI * 2)
-      ctx.fillStyle = isDark ? '#666' : '#888'
+      ctx.arc(circleX - 3, circleY - 3, 3, 0, Math.PI * 2)
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'
       ctx.fill()
-      
-      ctx.beginPath()
-      ctx.arc(bulbX, bulbY, 14, 0, Math.PI * 2)
-      const bulbGradient = ctx.createRadialGradient(bulbX - 4, bulbY - 4, 0, bulbX, bulbY, 14)
-      if (isOn) {
-        bulbGradient.addColorStop(0, isDark ? '#fff5e0' : '#fffacd')
-        bulbGradient.addColorStop(0.5, isDark ? '#c9a96e' : '#ffdd44')
-        bulbGradient.addColorStop(1, isDark ? '#8b7355' : '#cc9900')
-      } else {
-        bulbGradient.addColorStop(0, '#ddd')
-        bulbGradient.addColorStop(1, '#999')
-      }
-      ctx.fillStyle = bulbGradient
-      ctx.fill()
-      
-      ctx.beginPath()
-      ctx.arc(bulbX - 4, bulbY - 4, 5, 0, Math.PI * 2)
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'
-      ctx.fill()
-      
-      if (physics.isDragging) {
-        const pullProgress = Math.min(physics.length / physics.toggleThreshold, 1)
-        
-        ctx.beginPath()
-        ctx.arc(pivotX, pivotY + physics.toggleThreshold, 30, 0, Math.PI * 2)
-        ctx.strokeStyle = pullProgress >= 1 ? 'rgba(34, 197, 94, 0.5)' : 'rgba(201, 169, 110, 0.3)'
-        ctx.lineWidth = 2
-        ctx.setLineDash([5, 5])
-        ctx.stroke()
-        ctx.setLineDash([])
-        
-        ctx.beginPath()
-        ctx.moveTo(bulbX, bulbY)
-        ctx.lineTo(bulbX, pivotY + physics.toggleThreshold)
-        ctx.strokeStyle = 'rgba(201, 169, 110, 0.2)'
-        ctx.lineWidth = 1
-        ctx.stroke()
-      }
       
       animationRef.current = requestAnimationFrame(animate)
     }
@@ -198,10 +127,10 @@ const ThemeToggle = () => {
     animationRef.current = requestAnimationFrame(animate)
     
     const handleMouseMove = (e) => {
-      mouseRef.current = { x: e.clientX, y: e.clientY }
-      if (physics.isDragging) {
-        physics.dragX = e.clientX
-        physics.dragY = e.clientY
+      const rect = canvas.getBoundingClientRect()
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
       }
     }
     
@@ -210,144 +139,67 @@ const ThemeToggle = () => {
       const x = e.clientX - rect.left
       const y = e.clientY - rect.top
       
-      const pivotX = canvas.width / 2
-      const pivotY = 0
-      const bulbX = pivotX + Math.sin(physics.angle) * physics.length
-      const bulbY = pivotY + Math.cos(physics.angle) * physics.length
+      const circleX = pivotX + Math.sin(physics.angle) * restLength
+      const circleY = pivotY + Math.cos(physics.angle) * restLength
       
-      const dist = Math.sqrt((x - bulbX) ** 2 + (y - bulbY) ** 2)
+      const dist = Math.sqrt((x - circleX) ** 2 + (y - circleY) ** 2)
       
-      if (dist < 60) {
+      if (dist < 30) {
         physics.isDragging = true
-        physics.released = false
-        physics.dragX = e.clientX
-        physics.dragY = e.clientY
-        setShowHint(false)
-        if (hintTimeoutRef.current) {
-          clearTimeout(hintTimeoutRef.current)
+        physics.dragStartX = e.clientX
+        physics.dragStartY = e.clientY
+      }
+    }
+    
+    const handleMouseUp = (e) => {
+      if (physics.isDragging) {
+        const rect = canvas.getBoundingClientRect()
+        const dx = e.clientX - rect.left - pivotX
+        const dy = e.clientY - rect.top - pivotY
+        const pullDistance = Math.sqrt(dx * dx + dy * dy)
+        
+        // Toggle if pulled down far enough
+        if (pullDistance > 120) {
+          toggleTheme()
         }
-      }
-    }
-    
-    const handleMouseUp = () => {
-      if (physics.isDragging) {
+        
         physics.isDragging = false
-        physics.targetLength = restLength
-        physics.angularVelocity = physics.angle * 0.05
-        setTimeout(() => {
-          physics.released = false
-        }, 500)
+        physics.angularVelocity = physics.angle * 0.03
       }
     }
     
-    const handleTouchStart = (e) => {
-      const touch = e.touches[0]
-      const rect = canvas.getBoundingClientRect()
-      const x = touch.clientX - rect.left
-      const y = touch.clientY - rect.top
-      
-      const pivotX = canvas.width / 2
-      const pivotY = 0
-      const bulbX = pivotX + Math.sin(physics.angle) * physics.length
-      const bulbY = pivotY + Math.cos(physics.angle) * physics.length
-      
-      const dist = Math.sqrt((x - bulbX) ** 2 + (y - bulbY) ** 2)
-      
-      if (dist < 60) {
-        physics.isDragging = true
-        physics.released = false
-        physics.dragX = touch.clientX
-        physics.dragY = touch.clientY
-        setShowHint(false)
-      }
-    }
-    
-    const handleTouchMove = (e) => {
-      if (physics.isDragging) {
-        const touch = e.touches[0]
-        physics.dragX = touch.clientX
-        physics.dragY = touch.clientY
-      }
-    }
-    
-    const handleTouchEnd = () => {
-      if (physics.isDragging) {
-        physics.isDragging = false
-        physics.targetLength = restLength
-        physics.angularVelocity = physics.angle * 0.05
-      }
-    }
-    
-    window.addEventListener('mousemove', handleMouseMove)
+    canvas.addEventListener('mousemove', handleMouseMove)
     canvas.addEventListener('mousedown', handleMouseDown)
     window.addEventListener('mouseup', handleMouseUp)
-    canvas.addEventListener('touchstart', handleTouchStart)
-    canvas.addEventListener('touchmove', handleTouchMove)
-    canvas.addEventListener('touchend', handleTouchEnd)
-    
-    hintTimeoutRef.current = setTimeout(() => {
-      setShowHint(false)
-    }, 5000)
     
     return () => {
-      window.removeEventListener('resize', resize)
-      window.removeEventListener('mousemove', handleMouseMove)
+      canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
-      canvas.removeEventListener('touchstart', handleTouchStart)
-      canvas.removeEventListener('touchmove', handleTouchMove)
-      canvas.removeEventListener('touchend', handleTouchEnd)
       cancelAnimationFrame(animationRef.current)
-      if (hintTimeoutRef.current) {
-        clearTimeout(hintTimeoutRef.current)
-      }
     }
-  }, [isDark, isOn, toggleTheme])
+  }, [isDark, toggleTheme])
 
   return (
     <div
-      ref={containerRef}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-        zIndex: 9998,
+        width: '150px',
+        height: '250px',
+        zIndex: 1000,
+        pointerEvents: 'auto',
       }}
     >
       <canvas
         ref={canvasRef}
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
           width: '100%',
           height: '100%',
-          pointerEvents: 'auto',
           cursor: 'grab',
         }}
       />
-      {showHint && (
-        <div style={{
-          position: 'absolute',
-          top: '160px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontFamily: 'var(--font-mono)',
-          fontSize: '0.75rem',
-          color: 'var(--text-muted)',
-          backgroundColor: 'var(--bg-elevated)',
-          padding: '0.5rem 1rem',
-          border: '1px solid var(--text-dim)',
-          pointerEvents: 'none',
-          animation: 'fadeInUp 0.5s ease',
-          zIndex: 9999,
-        }}>
-          Pull the light to toggle theme
-        </div>
-      )}
     </div>
   )
 }
