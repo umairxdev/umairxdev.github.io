@@ -76,7 +76,3 @@ git push origin main
 | LinkedIn | [linkedin.com/in/umairxdev](https://linkedin.com/in/umairxdev) |
 
 ---
-
-## License
-
-MIT © Umair Ahmed
