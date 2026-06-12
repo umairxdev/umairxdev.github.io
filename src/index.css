@@ -102,6 +102,37 @@ a:hover {
     padding-left: 0 !important;
     padding-top: 2rem;
   }
+  
+  /* Hide desktop nav, show mobile */
+  .nav-desktop {
+    display: none !important;
+  }
+  
+  .nav-mobile-toggle {
+    display: block !important;
+  }
+  
+  nav {
+    padding: 1rem !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .nav-mobile-toggle {
+    display: none !important;
+  }
+  
+  .nav-mobile-menu {
+    display: none !important;
+  }
+}
+
+/* Theme toggle mobile */
+@media (max-width: 768px) {
+  .theme-toggle-container {
+    width: 60px !important;
+    height: 180px !important;
+  }
 }
 
 /* Grid overlay */
