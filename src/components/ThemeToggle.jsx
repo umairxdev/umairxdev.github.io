@@ -28,15 +28,17 @@ const ThemeToggle = () => {
     const ctx = canvas.getContext('2d')
     
     const resize = () => {
-      canvas.width = 300
-      canvas.height = 600
+      const isMobile = window.innerWidth < 768
+      canvas.width = isMobile ? 100 : 300
+      canvas.height = isMobile ? 400 : 600
     }
     resize()
+    window.addEventListener('resize', resize)
     
     const physics = physicsRef.current
     const pointCount = 30
     const spacing = 4.5
-    const pivotX = 150
+    const pivotX = canvas.width / 2
     const pivotY = 0
     
     // Initialize rope points
@@ -219,18 +221,20 @@ const ThemeToggle = () => {
       canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
+      window.removeEventListener('resize', resize)
       cancelAnimationFrame(animationRef.current)
     }
   }, [isDark, toggleTheme])
 
   return (
     <div
+      className="theme-toggle-container"
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '300px',
-        height: '600px',
+        width: window.innerWidth < 768 ? '100px' : '300px',
+        height: window.innerWidth < 768 ? '400px' : '600px',
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
