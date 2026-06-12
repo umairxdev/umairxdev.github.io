@@ -161,7 +161,7 @@ const ThemeToggle = () => {
       const lastPoint = points[points.length - 1]
       ctx.lineTo(lastPoint.x, lastPoint.y)
       
-      ctx.strokeStyle = isDark ? '#c9a96e' : '#1a1a1a'
+      ctx.strokeStyle = isDark ? '#ED8B2F' : '#1a1a1a'
       ctx.lineWidth = 2.5
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
@@ -170,7 +170,7 @@ const ThemeToggle = () => {
       // Draw circle at the end
       ctx.beginPath()
       ctx.arc(lastPoint.x, lastPoint.y, 14, 0, Math.PI * 2)
-      ctx.fillStyle = isDark ? '#c9a96e' : '#1a1a1a'
+      ctx.fillStyle = isDark ? '#ED8B2F' : '#1a1a1a'
       ctx.fill()
       
       animationRef.current = requestAnimationFrame(animate)
