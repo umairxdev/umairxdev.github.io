@@ -31,8 +31,8 @@ const ThemeToggle = () => {
     
     const resize = () => {
       const isMobile = window.innerWidth < 768
-      const w = isMobile ? 120 : 300
-      const h = isMobile ? 350 : 600
+      const w = isMobile ? 80 : 300
+      const h = isMobile ? 250 : 600
       canvas.width = w
       canvas.height = h
       if (container) {
@@ -272,7 +272,7 @@ const ThemeToggle = () => {
       style={{
         position: 'fixed',
         top: 0,
-        left: 0,
+        right: 0,
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
