@@ -45,8 +45,8 @@ const ThemeToggle = () => {
     window.addEventListener('resize', resize)
     
     const physics = physicsRef.current
-    const pointCount = 30
-    const spacing = 4.5
+    const pointCount = 25
+    const spacing = 5
     const pivotX = canvas.width / 2
     const pivotY = 0
     
@@ -68,9 +68,9 @@ const ThemeToggle = () => {
     const animate = () => {
       physics.time += 0.016
       
-      const gravity = 0.3
-      const friction = 0.97
-      const stiffness = 0.4
+      const gravity = 0.8
+      const friction = 0.92
+      const stiffness = 0.6
       
       if (physics.isDragging) {
         const lastPoint = points[points.length - 1]
@@ -93,8 +93,8 @@ const ThemeToggle = () => {
         physics.toggled = false
         
         const lastPoint = points[points.length - 1]
-        const targetX = pivotX + Math.sin(physics.time * 0.4) * 15
-        const targetY = 120 + Math.cos(physics.time * 0.6) * 8
+        const targetX = pivotX + Math.sin(physics.time * 0.2) * 5
+        const targetY = 130 + Math.cos(physics.time * 0.3) * 3
         
         lastPoint.x += (targetX - lastPoint.x) * 0.015
         lastPoint.y += (targetY - lastPoint.y) * 0.015
