@@ -37,6 +37,7 @@ const Navigation = () => {
           letterSpacing: '0.05em',
         }}>
           <a href="#about" onClick={handleNavClick}>ABOUT</a>
+          <a href="#services" onClick={handleNavClick}>SERVICES</a>
           <a href="#experience" onClick={handleNavClick}>EXPERIENCE</a>
           <a href="#projects" onClick={handleNavClick}>PROJECTS</a>
           <a href="#skills" onClick={handleNavClick}>SKILLS</a>
@@ -108,6 +109,11 @@ const Navigation = () => {
           fontFamily: 'var(--font-display)',
           fontWeight: 600,
         }}>ABOUT</a>
+        <a href="#services" onClick={() => setIsMenuOpen(false)} style={{
+          fontSize: '1.5rem',
+          fontFamily: 'var(--font-display)',
+          fontWeight: 600,
+        }}>SERVICES</a>
         <a href="#experience" onClick={() => setIsMenuOpen(false)} style={{
           fontSize: '1.5rem',
           fontFamily: 'var(--font-display)',
