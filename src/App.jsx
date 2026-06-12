@@ -35,7 +35,7 @@ function App() {
       <CustomCursor />
       <ThemeToggle />
       <Navigation />
-      <main>
+      <main style={{ position: 'relative', zIndex: 1 }}>
         <Hero />
         <Divider />
         <About />
