@@ -35,10 +35,10 @@ const ThemeToggle = () => {
     resize()
     
     const physics = physicsRef.current
-    const pointCount = 15
-    const spacing = 8
-    const pivotX = 50
-    const pivotY = 0
+      const pointCount = 20
+      const spacing = 7
+      const pivotX = 50
+      const pivotY = 0
     
     // Initialize rope points
     if (pointsRef.current.length === 0) {
@@ -172,14 +172,8 @@ const ThemeToggle = () => {
       
       // Draw circle at the end
       ctx.beginPath()
-      ctx.arc(lastPoint.x, lastPoint.y, 8, 0, Math.PI * 2)
+      ctx.arc(lastPoint.x, lastPoint.y, 14, 0, Math.PI * 2)
       ctx.fillStyle = isDark ? '#c9a96e' : '#1a1a1a'
-      ctx.fill()
-      
-      // Small highlight
-      ctx.beginPath()
-      ctx.arc(lastPoint.x - 2, lastPoint.y - 2, 2, 0, Math.PI * 2)
-      ctx.fillStyle = '#ffffff'
       ctx.fill()
       
       animationRef.current = requestAnimationFrame(animate)
@@ -201,7 +195,7 @@ const ThemeToggle = () => {
       const lastPoint = points[points.length - 1]
       const dist = Math.sqrt((x - lastPoint.x) ** 2 + (y - lastPoint.y) ** 2)
       
-      if (dist < 30) {
+      if (dist < 50) {
         physics.isDragging = true
         physics.toggled = false
         mouseRef.current.isDown = true
