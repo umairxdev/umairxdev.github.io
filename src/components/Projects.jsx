@@ -112,60 +112,60 @@ const Projects = () => {
     {
       title: 'DeepVoice Shield',
       tech: 'React, FastAPI, ONNX, Wav2Vec2',
-      description: 'AI-powered audio deepfake detection system. Fine-tuned Wav2Vec2 model for detecting synthetic vs real voice recordings. React frontend with FastAPI + ONNX inference backend.',
+      description: 'AI-powered audio deepfake detection system; fine-tuned a Wav2Vec2 model for detecting synthetic vs real voice recordings. Built React frontend integrated with a FastAPI + ONNX inference backend.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
-        { label: 'Live', url: '#' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/DeepVoice-Shield.git' },
+        { label: 'Live', url: 'https://deepvoice-shield-frontend.vercel.app/' },
       ],
     },
     {
       title: 'AsphaltAI',
       tech: 'YOLOv8, ONNX, Gradio, Python',
-      description: 'Road defect detection system trained on 11k images. Achieved 0.581 mAP@50 (0.744 on potholes) using YOLOv8l. Exported to ONNX for framework-agnostic inference.',
+      description: 'Road defect detection system trained on the Velotech Road Damage Detection dataset (~11k images); achieved 0.581 mAP@50 (0.744 on potholes) using YOLOv8l. Exported model to ONNX for framework-agnostic inference; saved on Hugging Face.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
-        { label: 'HF', url: '#' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/AsphaltAI.git' },
+        { label: 'HF', url: 'https://huggingface.co/umairahmed911/AsphaltAI-v1' },
       ],
     },
     {
       title: 'Email Triage Classifier',
       tech: 'React, Flask, scikit-learn, Docker',
-      description: 'ML-powered email classification with soft-voting ensemble (Logistic Regression + LinearSVC + Naive Bayes). Containerized full-stack app with React, Flask, and Nginx.',
+      description: 'ML-powered email classification system categorising messages into spam, promotions, social, updates, and personal using a soft-voting ensemble (Logistic Regression + LinearSVC + Naive Bayes) with TF-IDF, trained on the Enron-Spam dataset. Containerised full-stack app with React frontend, Flask REST API, and Nginx reverse proxy via Docker Compose.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/Email-Triage.git' },
       ],
     },
     {
       title: 'NeoZ',
       tech: 'Next.js 16, React 19, Tailwind CSS 4, RSS',
-      description: 'Personalized news aggregation platform from 40+ RSS sources across 11 categories. Features full-text search, live weather, dark/light mode, and mobile-first design.',
+      description: 'Personalized news aggregation platform pulling from 40+ trusted RSS sources across 11 categories (Technology, AI, Science, Business, Sports, World, Pakistan, and more). Features full-text search, live local weather via Open-Meteo API, dark/light mode with system preference detection, and mobile-first responsive design.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
-        { label: 'Live', url: '#' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/NeoZ.git' },
+        { label: 'Live', url: 'https://neoz.vercel.app' },
       ],
     },
     {
       title: 'Pockit',
       tech: 'Kotlin, Jetpack Compose',
-      description: 'Offline expense tracker with clean modern UI, local storage, income & expense management, recurring payments, and financial analytics dashboard.',
+      description: 'Offline expense tracker app with a clean modern UI, local data storage, income & expense management, and recurring payment support. Built financial analytics dashboard providing spending insights and summaries using Kotlin and Jetpack Compose.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/Expense_Tracker.git' },
       ],
     },
     {
       title: 'Go Web Crawler',
       tech: 'Go (Golang)',
-      description: 'Concurrent web crawler traversing pages up to specified depth with rate limiting and duplicate avoidance. Demonstrates goroutines, channels, sync.Map, and sync.WaitGroup.',
+      description: "Concurrent web crawler built in Go that traverses web pages up to a specified depth with rate limiting and duplicate avoidance. Demonstrates Go's concurrency model using goroutines, channels, sync.Map, and sync.WaitGroup.",
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/Go_Web-Crawler.git' },
       ],
     },
     {
       title: 'Go ChatApp',
       tech: 'Go, WebSockets',
-      description: 'Lightweight real-time web chat using Go, Gorilla WebSocket, and HTML/CSS/JS. Efficiently handles concurrent WebSocket connections with native Go concurrency.',
+      description: "Lightweight real-time web chat application built using Go, Gorilla WebSocket, and standard HTML/CSS/JavaScript. Efficiently handles concurrent WebSocket connections using Go's native concurrency support.",
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/go-chat-app.git' },
       ],
     },
     {
@@ -173,7 +173,15 @@ const Projects = () => {
       tech: 'n8n, Binance API, Google Gemini',
       description: 'Automated cryptocurrency analysis workflow using n8n for data collection, processing, and generating trading insights with real-time market monitoring.',
       links: [
-        { label: 'GitHub', url: 'https://github.com/umairxdev' },
+        { label: 'GitHub', url: 'https://github.com/umairxdev/Crypto-Analysis-n8n.git' },
+      ],
+    },
+    {
+      title: 'Hotel Management System',
+      tech: 'Java, SQL, JDBC',
+      description: 'Comprehensive hotel management solution including booking system, room management, and customer database.',
+      links: [
+        { label: 'GitHub', url: 'https://github.com/umairxdev/Hotel-Management-System.git' },
       ],
     },
   ]

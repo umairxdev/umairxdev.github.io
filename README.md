@@ -22,6 +22,10 @@ npm install
 npm run dev
 ```
 
+## Contact Form
+
+The contact form opens the user's default email client with a pre-filled message.
+
 ## Deployment
 
 This site is automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
