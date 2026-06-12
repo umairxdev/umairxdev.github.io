@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const ServiceCard = ({ icon, title, description, tools, delay }) => {
+const ServiceCard = ({ number, title, description, tools, delay }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const ref = useRef(null)
@@ -49,10 +49,13 @@ const ServiceCard = ({ icon, title, description, tools, delay }) => {
       }} />
       
       <div style={{
-        fontSize: '2rem',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.75rem',
+        color: 'var(--accent)',
         marginBottom: '1rem',
+        letterSpacing: '0.1em',
       }}>
-        {icon}
+        {number}
       </div>
       
       <h3 style={{
@@ -100,34 +103,34 @@ const ServiceCard = ({ icon, title, description, tools, delay }) => {
 const Services = () => {
   const services = [
     {
-      icon: '⚡',
+      number: '01',
       title: 'AI Automation',
       description: 'I build intelligent systems that work while you sleep. From custom AI workflows to autonomous agents — I design automations that eliminate repetitive tasks, connect your tools, and scale your operations without scaling your team.',
       tools: ['LangChain', 'n8n', 'Custom Bots', 'AI Agents', 'Workflow Automation'],
     },
     {
-      icon: '🧠',
+      number: '02',
       title: 'LLM Training & Fine-Tuning',
       description: 'I turn generic AI into your specialized expert. Whether you need a model trained on your domain data, fine-tuned for your use case, or optimized for production — I handle the full pipeline from data prep to deployment.',
       tools: ['LoRA', 'QLoRA', 'RLHF', 'PEFT', 'Transformers', 'OpenAI API'],
     },
     {
-      icon: '🚀',
+      number: '03',
       title: 'Web Applications',
       description: 'I craft fast, modern web experiences that convert. From sleek landing pages to complex SaaS dashboards — I build performant, scalable apps using the latest frameworks with clean, maintainable code.',
       tools: ['React', 'Next.js', 'TypeScript', 'Tailwind', 'Node.js', 'FastAPI'],
     },
     {
-      icon: '🔄',
+      number: '04',
       title: 'No-Code Automation',
       description: 'I connect your entire tech stack without writing a line of code. I design and build automated workflows that sync your data, trigger actions, and keep your business running smoothly across all platforms.',
       tools: ['n8n', 'Zapier', 'Make', 'Webhooks', 'API Integrations'],
     },
     {
-      icon: '📱',
+      number: '05',
       title: 'Desktop & Mobile Apps',
       description: 'I build native applications that feel right at home on any device. From desktop tools to Android apps — I create performant, beautiful interfaces with smooth animations and rock-solid functionality.',
-      tools: ['Kotlin', 'Jetpack Compose', 'Electron', 'React Native', 'Java'],
+      tools: ['Rust', 'Tauri', 'Kotlin', 'Jetpack Compose', 'Electron', 'React Native'],
     },
   ]
 
@@ -167,7 +170,7 @@ const Services = () => {
           {services.map((service, i) => (
             <ServiceCard
               key={i}
-              icon={service.icon}
+              number={service.number}
               title={service.title}
               description={service.description}
               tools={service.tools}
