@@ -4,7 +4,6 @@ const ThemeToggle = () => {
   const canvasRef = useRef(null)
   const [isDark, setIsDark] = useState(true)
   
-  // Rope physics: each point has position and velocity
   const pointsRef = useRef([])
   const physicsRef = useRef({
     isDragging: false,
@@ -29,16 +28,16 @@ const ThemeToggle = () => {
     const ctx = canvas.getContext('2d')
     
     const resize = () => {
-      canvas.width = 100
-      canvas.height = 200
+      canvas.width = 150
+      canvas.height = 400
     }
     resize()
     
     const physics = physicsRef.current
-      const pointCount = 20
-      const spacing = 7
-      const pivotX = 50
-      const pivotY = 0
+    const pointCount = 30
+    const spacing = 6
+    const pivotX = 75
+    const pivotY = 0
     
     // Initialize rope points
     if (pointsRef.current.length === 0) {
@@ -59,25 +58,23 @@ const ThemeToggle = () => {
     const animate = () => {
       physics.time += 0.016
       
-      // Verlet integration for physics
-      const gravity = 0.4
-      const friction = 0.95
-      const stiffness = 0.3
+      const gravity = 0.3
+      const friction = 0.97
+      const stiffness = 0.4
       
       if (physics.isDragging) {
-        // Pull the last point (circle) to mouse position
         const lastPoint = points[points.length - 1]
         const dx = mouseRef.current.x - lastPoint.x
         const dy = mouseRef.current.y - lastPoint.y
         const dist = Math.sqrt(dx * dx + dy * dy)
         
         if (dist > 1) {
-          lastPoint.x += dx * 0.3
-          lastPoint.y += dy * 0.3
+          lastPoint.x += dx * 0.2
+          lastPoint.y += dy * 0.2
         }
         
         // Check toggle threshold
-        if (lastPoint.y > 150) {
+        if (lastPoint.y > 200) {
           if (!physics.toggled) {
             physics.toggled = true
             toggleTheme()
@@ -86,39 +83,39 @@ const ThemeToggle = () => {
       } else {
         physics.toggled = false
         
-        // Add gentle swing to the last point (pendulum-like)
+        // Gentle swing for the last point
         const lastPoint = points[points.length - 1]
-        const targetX = pivotX + Math.sin(physics.time * 0.5) * 10
-        const targetY = 120 + Math.cos(physics.time * 0.7) * 5
+        const targetX = pivotX + Math.sin(physics.time * 0.4) * 15
+        const targetY = 140 + Math.cos(physics.time * 0.6) * 8
         
-        lastPoint.x += (targetX - lastPoint.x) * 0.02
-        lastPoint.y += (targetY - lastPoint.y) * 0.02
+        lastPoint.x += (targetX - lastPoint.x) * 0.015
+        lastPoint.y += (targetY - lastPoint.y) * 0.015
       }
       
-      // Verlet integration for all points
+      // Verlet integration
       for (let i = 0; i < points.length; i++) {
-        if (i === 0) continue // First point is fixed at pivot
-        if (physics.isDragging && i === points.length - 1) continue // Last point controlled by mouse
+        if (i === 0) continue
+        if (physics.isDragging && i === points.length - 1) continue
         
         const point = points[i]
         const tempX = point.x
         const tempY = point.y
         
-        point.x += (point.x - point.oldX) * friction + 0
+        point.x += (point.x - point.oldX) * friction
         point.y += (point.y - point.oldY) * friction + gravity
         
         point.oldX = tempX
         point.oldY = tempY
       }
       
-      // First point always fixed at pivot
+      // First point fixed
       points[0].x = pivotX
       points[0].y = pivotY
       points[0].oldX = pivotX
       points[0].oldY = pivotY
       
-      // Spring constraints between points (multiple iterations for stiffness)
-      for (let iter = 0; iter < 5; iter++) {
+      // Spring constraints - more iterations for smoother rope
+      for (let iter = 0; iter < 10; iter++) {
         for (let i = 0; i < points.length - 1; i++) {
           const p1 = points[i]
           const p2 = points[i + 1]
@@ -225,8 +222,8 @@ const ThemeToggle = () => {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100px',
-        height: '200px',
+        width: '150px',
+        height: '400px',
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
