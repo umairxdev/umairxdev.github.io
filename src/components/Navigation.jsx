@@ -29,6 +29,7 @@ const Navigation = () => {
         fontFamily: 'var(--font-mono)',
         letterSpacing: '0.05em',
       }}>
+        <a href="#about" style={{ color: 'var(--text)' }}>ABOUT</a>
         <a href="#experience" style={{ color: 'var(--text)' }}>EXPERIENCE</a>
         <a href="#projects" style={{ color: 'var(--text)' }}>PROJECTS</a>
         <a href="#skills" style={{ color: 'var(--text)' }}>SKILLS</a>

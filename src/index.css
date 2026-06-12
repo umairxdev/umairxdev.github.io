@@ -80,6 +80,20 @@ a:hover {
   }
 }
 
+@media (max-width: 768px) {
+  #about .container > div > div {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  
+  #about .container > div > div > div:last-child {
+    border-left: none !important;
+    border-top: 1px solid var(--text-dim);
+    padding-left: 0 !important;
+    padding-top: 2rem;
+  }
+}
+
 /* Noise overlay */
 .noise-overlay {
   position: fixed;
