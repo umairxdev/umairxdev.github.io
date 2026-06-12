@@ -5,7 +5,7 @@ const Navigation = () => {
     <nav style={{
       position: 'fixed',
       top: 0,
-      left: '150px',
+      left: '300px',
       right: 0,
       padding: '2rem',
       zIndex: 1000,

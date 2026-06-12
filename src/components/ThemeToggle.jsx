@@ -28,15 +28,15 @@ const ThemeToggle = () => {
     const ctx = canvas.getContext('2d')
     
     const resize = () => {
-      canvas.width = 200
-      canvas.height = 500
+      canvas.width = 300
+      canvas.height = 600
     }
     resize()
     
     const physics = physicsRef.current
     const pointCount = 30
-    const spacing = 5
-    const pivotX = 75
+    const spacing = 4.5
+    const pivotX = 150
     const pivotY = 0
     
     // Initialize rope points
@@ -86,7 +86,7 @@ const ThemeToggle = () => {
         // Gentle swing for the last point
         const lastPoint = points[points.length - 1]
         const targetX = pivotX + Math.sin(physics.time * 0.4) * 15
-        const targetY = 140 + Math.cos(physics.time * 0.6) * 8
+        const targetY = 120 + Math.cos(physics.time * 0.6) * 8
         
         lastPoint.x += (targetX - lastPoint.x) * 0.015
         lastPoint.y += (targetY - lastPoint.y) * 0.015
@@ -148,6 +148,10 @@ const ThemeToggle = () => {
       
       ctx.clearRect(0, 0, canvas.width, canvas.height)
       
+      // Draw top bar
+      ctx.fillStyle = isDark ? '#ED8B2F' : '#1a1a1a'
+      ctx.fillRect(pivotX - 15, 0, 30, 6)
+      
       // Draw rope with smooth curve
       ctx.beginPath()
       ctx.moveTo(points[0].x, points[0].y)
@@ -167,11 +171,14 @@ const ThemeToggle = () => {
       ctx.lineJoin = 'round'
       ctx.stroke()
       
-      // Draw circle at the end
+      // Draw big circle at the end with white outline
       ctx.beginPath()
-      ctx.arc(lastPoint.x, lastPoint.y, 14, 0, Math.PI * 2)
+      ctx.arc(lastPoint.x, lastPoint.y, 20, 0, Math.PI * 2)
       ctx.fillStyle = isDark ? '#ED8B2F' : '#1a1a1a'
       ctx.fill()
+      ctx.strokeStyle = '#ffffff'
+      ctx.lineWidth = 3
+      ctx.stroke()
       
       animationRef.current = requestAnimationFrame(animate)
     }
@@ -222,8 +229,8 @@ const ThemeToggle = () => {
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '200px',
-        height: '500px',
+        width: '300px',
+        height: '600px',
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
