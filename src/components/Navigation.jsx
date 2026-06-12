@@ -5,23 +5,15 @@ const Navigation = () => {
     <nav style={{
       position: 'fixed',
       top: 0,
-      left: 0,
-      width: '100%',
+      left: '150px',
+      right: 0,
       padding: '2rem',
       zIndex: 1000,
       mixBlendMode: 'difference',
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-end',
       alignItems: 'center',
     }}>
-      <div style={{
-        fontFamily: 'var(--font-display)',
-        fontWeight: 700,
-        fontSize: '1.2rem',
-        letterSpacing: '-0.02em',
-      }}>
-        UA
-      </div>
       <div style={{
         display: 'flex',
         gap: '2rem',
