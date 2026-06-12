@@ -11,15 +11,15 @@ const GridOverlay = () => {
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        zIndex: -1,
-        opacity: 0.6,
+        zIndex: 0,
+        opacity: 1,
       }}
     >
       <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
-            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3" />
-            <path d="M 45 50 L 55 50 M 50 45 L 50 55" stroke="currentColor" strokeWidth="2" opacity="0.8" />
+          <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+            <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.25" />
+            <path d="M 36 40 L 44 40 M 40 36 L 40 44" stroke="currentColor" strokeWidth="1.5" opacity="0.5" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#grid)" />
