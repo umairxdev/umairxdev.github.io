@@ -11,6 +11,16 @@
   --ease: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
+[data-theme="light"] {
+  --bg: #f5f5f0;
+  --bg-elevated: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666666;
+  --text-dim: #cccccc;
+  --accent: #c9a96e;
+  --accent-soft: #c9a96e22;
+}
+
 * {
   margin: 0;
   padding: 0;
