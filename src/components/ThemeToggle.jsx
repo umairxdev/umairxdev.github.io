@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react'
 
 const ThemeToggle = () => {
   const canvasRef = useRef(null)
+  const containerRef = useRef(null)
   const [isDark, setIsDark] = useState(true)
   
   const pointsRef = useRef([])
@@ -26,11 +27,18 @@ const ThemeToggle = () => {
     if (!canvas) return
     
     const ctx = canvas.getContext('2d')
+    const container = containerRef.current
     
     const resize = () => {
       const isMobile = window.innerWidth < 768
-      canvas.width = isMobile ? 100 : 300
-      canvas.height = isMobile ? 400 : 600
+      const w = isMobile ? 120 : 300
+      const h = isMobile ? 350 : 600
+      canvas.width = w
+      canvas.height = h
+      if (container) {
+        container.style.width = w + 'px'
+        container.style.height = h + 'px'
+      }
     }
     resize()
     window.addEventListener('resize', resize)
@@ -41,7 +49,6 @@ const ThemeToggle = () => {
     const pivotX = canvas.width / 2
     const pivotY = 0
     
-    // Initialize rope points
     if (pointsRef.current.length === 0) {
       for (let i = 0; i < pointCount; i++) {
         pointsRef.current.push({
@@ -75,7 +82,6 @@ const ThemeToggle = () => {
           lastPoint.y += dy * 0.2
         }
         
-        // Check toggle threshold
         if (lastPoint.y > 200) {
           if (!physics.toggled) {
             physics.toggled = true
@@ -85,7 +91,6 @@ const ThemeToggle = () => {
       } else {
         physics.toggled = false
         
-        // Gentle swing for the last point
         const lastPoint = points[points.length - 1]
         const targetX = pivotX + Math.sin(physics.time * 0.4) * 15
         const targetY = 120 + Math.cos(physics.time * 0.6) * 8
@@ -94,7 +99,6 @@ const ThemeToggle = () => {
         lastPoint.y += (targetY - lastPoint.y) * 0.015
       }
       
-      // Verlet integration
       for (let i = 0; i < points.length; i++) {
         if (i === 0) continue
         if (physics.isDragging && i === points.length - 1) continue
@@ -110,13 +114,11 @@ const ThemeToggle = () => {
         point.oldY = tempY
       }
       
-      // First point fixed
       points[0].x = pivotX
       points[0].y = pivotY
       points[0].oldX = pivotX
       points[0].oldY = pivotY
       
-      // Spring constraints - more iterations for smoother rope
       for (let iter = 0; iter < 10; iter++) {
         for (let i = 0; i < points.length - 1; i++) {
           const p1 = points[i]
@@ -144,7 +146,6 @@ const ThemeToggle = () => {
         }
       }
       
-      // Keep first point fixed
       points[0].x = pivotX
       points[0].y = pivotY
       
@@ -154,7 +155,7 @@ const ThemeToggle = () => {
       ctx.fillStyle = isDark ? '#ED8B2F' : '#1a1a1a'
       ctx.fillRect(pivotX - 15, 0, 30, 6)
       
-      // Draw rope with smooth curve
+      // Draw rope
       ctx.beginPath()
       ctx.moveTo(points[0].x, points[0].y)
       
@@ -168,12 +169,12 @@ const ThemeToggle = () => {
       ctx.lineTo(lastPoint.x, lastPoint.y)
       
       ctx.strokeStyle = isDark ? '#ED8B2F' : '#1a1a1a'
-      ctx.lineWidth = 2.5
+      ctx.lineWidth = 3
       ctx.lineCap = 'round'
       ctx.lineJoin = 'round'
       ctx.stroke()
       
-      // Draw big circle at the end with white outline
+      // Draw circle
       ctx.beginPath()
       ctx.arc(lastPoint.x, lastPoint.y, 20, 0, Math.PI * 2)
       ctx.fillStyle = isDark ? '#ED8B2F' : '#1a1a1a'
@@ -213,28 +214,65 @@ const ThemeToggle = () => {
       mouseRef.current.isDown = false
     }
     
+    const handleTouchStart = (e) => {
+      const touch = e.touches[0]
+      const rect = canvas.getBoundingClientRect()
+      const x = touch.clientX - rect.left
+      const y = touch.clientY - rect.top
+      
+      const lastPoint = points[points.length - 1]
+      const dist = Math.sqrt((x - lastPoint.x) ** 2 + (y - lastPoint.y) ** 2)
+      
+      if (dist < 50) {
+        physics.isDragging = true
+        physics.toggled = false
+        mouseRef.current.x = x
+        mouseRef.current.y = y
+        e.preventDefault()
+      }
+    }
+    
+    const handleTouchMove = (e) => {
+      if (physics.isDragging) {
+        const touch = e.touches[0]
+        const rect = canvas.getBoundingClientRect()
+        mouseRef.current.x = touch.clientX - rect.left
+        mouseRef.current.y = touch.clientY - rect.top
+        e.preventDefault()
+      }
+    }
+    
+    const handleTouchEnd = () => {
+      physics.isDragging = false
+      mouseRef.current.isDown = false
+    }
+    
     canvas.addEventListener('mousemove', handleMouseMove)
     canvas.addEventListener('mousedown', handleMouseDown)
     window.addEventListener('mouseup', handleMouseUp)
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: false })
+    canvas.addEventListener('touchmove', handleTouchMove, { passive: false })
+    canvas.addEventListener('touchend', handleTouchEnd)
     
     return () => {
       canvas.removeEventListener('mousemove', handleMouseMove)
       canvas.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('resize', resize)
+      canvas.removeEventListener('touchstart', handleTouchStart)
+      canvas.removeEventListener('touchmove', handleTouchMove)
+      canvas.removeEventListener('touchend', handleTouchEnd)
       cancelAnimationFrame(animationRef.current)
     }
   }, [isDark, toggleTheme])
 
   return (
     <div
-      className="theme-toggle-container"
+      ref={containerRef}
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: window.innerWidth < 768 ? '100px' : '300px',
-        height: window.innerWidth < 768 ? '400px' : '600px',
         zIndex: 1000,
         pointerEvents: 'auto',
       }}
@@ -242,8 +280,6 @@ const ThemeToggle = () => {
       <canvas
         ref={canvasRef}
         style={{
-          width: '100%',
-          height: '100%',
           cursor: 'grab',
         }}
       />
