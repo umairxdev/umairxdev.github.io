@@ -80,7 +80,6 @@ const CustomCursor = () => {
           borderRadius: '2px',
           pointerEvents: 'none',
           zIndex: 10000,
-          mixBlendMode: 'difference',
           transition: 'width 0.2s ease, height 0.2s ease, background-color 0.2s ease',
         }}
       />

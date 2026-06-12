@@ -9,7 +9,6 @@ const Navigation = () => {
       right: 0,
       padding: '2rem',
       zIndex: 1000,
-      mixBlendMode: 'difference',
       display: 'flex',
       justifyContent: 'flex-end',
       alignItems: 'center',
@@ -21,11 +20,11 @@ const Navigation = () => {
         fontFamily: 'var(--font-mono)',
         letterSpacing: '0.05em',
       }}>
-        <a href="#about" style={{ color: 'var(--text)' }}>ABOUT</a>
-        <a href="#experience" style={{ color: 'var(--text)' }}>EXPERIENCE</a>
-        <a href="#projects" style={{ color: 'var(--text)' }}>PROJECTS</a>
-        <a href="#skills" style={{ color: 'var(--text)' }}>SKILLS</a>
-        <a href="#contact" style={{ color: 'var(--text)' }}>CONTACT</a>
+        <a href="#about">ABOUT</a>
+        <a href="#experience">EXPERIENCE</a>
+        <a href="#projects">PROJECTS</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#contact">CONTACT</a>
       </div>
     </nav>
   )
