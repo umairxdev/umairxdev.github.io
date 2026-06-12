@@ -1,68 +1,82 @@
-# umair.github.io
+# Umair Ahmed — Portfolio
 
-Personal portfolio website for **Umair Ahmed** — AI & Automation Engineer.
+**AI & Automation Engineer**
+
+[![Deployed](https://img.shields.io/badge/LIVE-SITE-ED8B2F?style=flat&labelColor=050505)](https://umairxdev.github.io)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&labelColor=050505)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat&labelColor=050505)](https://vitejs.dev)
+
+---
 
 > Turning complex problems into elegant solutions.
 
-## About
+A minimal, high-performance portfolio built with a brutalist developer aesthetic. No frameworks. No templates. Pure code.
 
-A minimal, developer-style portfolio showcasing expertise in AI automation, LLM training, web development, and no-code solutions. Built with a brutalist aesthetic — no fluff, just code.
+## Live
+
+**[umairxdev.github.io](https://umairxdev.github.io)**
+
+---
+
+## What I Do
+
+| Service | Expertise |
+|---------|-----------|
+| **AI Automation** | LangChain, n8n, custom bots, autonomous agents, workflow orchestration |
+| **LLM Training & Fine-Tuning** | LoRA, QLoRA, RLHF, PEFT, full pipeline from data prep to deployment |
+| **Web Applications** | React, Next.js, TypeScript, FastAPI, Node.js |
+| **No-Code Automation** | n8n, Zapier, Make, webhooks, API integrations |
+| **Desktop & Mobile Apps** | Rust, Tauri, Kotlin, Jetpack Compose, Electron, React Native |
+
+---
 
 ## Tech Stack
 
-| Category | Technologies |
-|----------|-------------|
-| Frontend | React 19, Vite 6 |
-| Styling | CSS3 (custom properties, animations) |
-| Typography | Syne (display) + JetBrains Mono (body) |
-| Deployment | GitHub Pages via GitHub Actions |
+```
+Frontend    React 19, Vite 6, CSS3
+Typography  Syne (display), JetBrains Mono (body)
+Deploy      GitHub Actions → GitHub Pages
+```
 
 ## Features
 
-- **Dark/Light Theme** — Hanging light toggle with Verlet rope physics
-- **Grid Background** — SVG pattern with + signs at intersections
-- **Custom Cursor** — Mouse-following interactive cursor
-- **Sound Effects** — Click sounds for navigation and interactions
-- **Responsive Design** — Mobile-first with hamburger navigation
-- **Scroll Animations** — Intersection Observer-based reveals
-- **Noise Texture** — Subtle grain overlay for depth
+- Hanging light theme toggle with Verlet rope physics
+- SVG grid background with intersection markers
+- Custom cursor with smooth follow
+- Click sound effects (Web Audio API)
+- Responsive hamburger navigation
+- Intersection Observer scroll animations
+- Noise texture overlay
 
-## Services
-
-- **AI Automation** — LangChain, n8n, custom bots, AI agents
-- **LLM Training & Fine-Tuning** — LoRA, QLoRA, RLHF, PEFT
-- **Web Applications** — React, Next.js, FastAPI
-- **No-Code Automation** — n8n, Zapier, Make
-- **Desktop & Mobile Apps** — Rust, Tauri, Kotlin, Jetpack Compose
-
-## Development
+## Getting Started
 
 ```bash
-# Install dependencies
+git clone https://github.com/umairxdev/umairxdev.github.io.git
+cd umairxdev.github.io
 npm install
-
-# Start dev server
 npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
 ```
 
 ## Deployment
 
-Automatically deployed to GitHub Pages via GitHub Actions on every push to `main`.
+Push to `main` triggers automatic deployment via GitHub Actions.
 
-**Live Site:** [https://umairxdev.github.io/umair.github.io](https://umairxdev.github.io/umair.github.io)
+```bash
+git push origin main
+```
+
+---
 
 ## Contact
 
-- **Email:** [umair@example.com](mailto:umair@example.com)
-- **LinkedIn:** [linkedin.com/in/umairxdev](https://linkedin.com/in/umairxdev)
-- **GitHub:** [github.com/umairxdev](https://github.com/umairxdev)
+| Platform | Link |
+|----------|------|
+| Email | umair@example.com |
+| GitHub | [github.com/umairxdev](https://github.com/umairxdev) |
+| LinkedIn | [linkedin.com/in/umairxdev](https://linkedin.com/in/umairxdev) |
+
+---
 
 ## License
 
-MIT
+MIT © Umair Ahmed
